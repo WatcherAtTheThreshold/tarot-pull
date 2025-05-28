@@ -7,10 +7,6 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
     
-    * {
-      box-sizing: border-box;
-    }
-    
     body {
       margin: 0;
       font-family: 'Crimson Text', 'Georgia', serif;
@@ -34,10 +30,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: 
-        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 183, 197, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(120, 158, 255, 0.2) 0%, transparent 50%);
+      background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%);
       pointer-events: none;
       z-index: -1;
     }
@@ -57,7 +50,6 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
     
     .intro {
@@ -78,10 +70,8 @@
       font-weight: 600;
       cursor: pointer;
       border-radius: 50px;
-      box-shadow: 
-        0 8px 25px rgba(0,0,0,0.3),
-        inset 0 1px 0 rgba(255,255,255,0.4);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      transition: all 0.4s ease;
       color: #5d4e37;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -90,13 +80,7 @@
     button:hover {
       background: linear-gradient(145deg, #f2dcc0, #dcc7a8);
       transform: translateY(-2px) scale(1.05);
-      box-shadow: 
-        0 12px 35px rgba(0,0,0,0.4),
-        inset 0 1px 0 rgba(255,255,255,0.5);
-    }
-    
-    button:active {
-      transform: translateY(0) scale(1.02);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.4);
     }
     
     .card-container {
@@ -116,11 +100,9 @@
       width: 280px;
       height: 400px;
       border-radius: 20px;
-      box-shadow: 
-        0 20px 40px rgba(0,0,0,0.4),
-        0 15px 12px rgba(0,0,0,0.2);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
       transform-style: preserve-3d;
-      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 0.8s ease;
       cursor: pointer;
       position: relative;
       margin: 0 auto;
@@ -132,10 +114,6 @@
     
     .card.flipped {
       transform: rotateY(180deg);
-    }
-    
-    .card.flipped:hover {
-      transform: rotateY(180deg) rotateX(5deg) rotateY(175deg) scale(1.02);
     }
     
     .card-face {
@@ -151,7 +129,6 @@
     .card-front {
       background-size: cover;
       background-position: center;
-      position: relative;
       background-color: #4a3c8c;
       display: flex;
       align-items: center;
@@ -159,19 +136,6 @@
       color: #f8f4e6;
       font-size: 1.2rem;
       text-align: center;
-    }
-    
-    .card-front::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(45deg, 
-        rgba(255,255,255,0.1) 0%, 
-        transparent 50%, 
-        rgba(0,0,0,0.1) 100%);
     }
     
     .card-back {
@@ -185,19 +149,6 @@
       font-size: 1.1rem;
       color: #3b2f2f;
       text-align: center;
-      position: relative;
-    }
-    
-    .card-back::before {
-      content: '';
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      right: 20px;
-      bottom: 20px;
-      border: 2px solid rgba(139, 117, 91, 0.2);
-      border-radius: 15px;
-      pointer-events: none;
     }
     
     .card-back h2 {
@@ -205,17 +156,12 @@
       font-size: 1.6rem;
       font-weight: 600;
       color: #7b4e2d;
-      background: linear-gradient(45deg, #8b5a3c, #a0522d);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
     }
     
     .card-back p {
       line-height: 1.6;
       font-style: italic;
       margin: 0;
-      z-index: 1;
     }
     
     .mystical-elements {
@@ -223,7 +169,6 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      overflow: hidden;
     }
     
     .star {
@@ -238,38 +183,15 @@
     .star:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
     .star:nth-child(2) { top: 40%; left: 80%; animation-delay: 1s; }
     .star:nth-child(3) { top: 70%; left: 20%; animation-delay: 2s; }
-    .star:nth-child(4) { top: 30%; left: 60%; animation-delay: 1.5s; }
-    .star:nth-child(5) { top: 80%; left: 70%; animation-delay: 0.5s; }
     
     @keyframes twinkle {
       0%, 100% { opacity: 0.3; transform: scale(1); }
       50% { opacity: 1; transform: scale(1.5); }
     }
-    
-    @media (max-width: 768px) {
-      .container {
-        padding: 1rem;
-      }
-      
-      h1 {
-        font-size: 2.2rem;
-      }
-      
-      .card {
-        width: 240px;
-        height: 340px;
-      }
-      
-      .card-back {
-        padding: 1.5rem;
-      }
-    }
   </style>
 </head>
 <body>
   <div class="mystical-elements">
-    <div class="star"></div>
-    <div class="star"></div>
     <div class="star"></div>
     <div class="star"></div>
     <div class="star"></div>
@@ -302,7 +224,7 @@ const cards = [
 
 const meanings = {
   'MinervasWisdom.webp': {
-    title: 'Minerva's Wisdom',
+    title: 'Minerva\'s Wisdom',
     message: 'Insight is not given, it is earned. Today, trust in your learning and seek the deeper layer in all things.'
   },
   'MoonGarden-CC.png': {
@@ -314,23 +236,21 @@ const meanings = {
     message: 'You are keeper of wild spaces. Let instinct move you, and let your power remain untamed.'
   },
   'under-the-aegis-of-inanna.webp': {
-    title: 'Under Inanna's Aegis',
+    title: 'Under Inanna\'s Aegis',
     message: 'Your duality is your strength. Embrace boldness and beauty, destruction and rebirth.'
   },
   'under-the-aegis-of-ishtarr.webp': {
-    title: 'Under Ishtar's Aegis',
+    title: 'Under Ishtar\'s Aegis',
     message: 'Warrior and lover, hunter and healer — you are more than one story. Honor the fullness of your being.'
   }
 };
 
 let selectedCard = null;
-let isFlipped = false;
 
 function drawCard() {
   console.log('Drawing card...');
   const index = Math.floor(Math.random() * cards.length);
   selectedCard = cards[index];
-  isFlipped = false;
   
   const cardFront = document.getElementById('cardFront');
   const cardTitle = document.getElementById('cardTitle');
@@ -338,18 +258,13 @@ function drawCard() {
   const cardContainer = document.getElementById('cardContainer');
   const tarotCard = document.getElementById('tarotCard');
   
-  // Set background image
   cardFront.style.backgroundImage = `url('./images/${selectedCard}')`;
   
-  // Set card meaning
   const meaning = meanings[selectedCard];
   cardTitle.textContent = meaning.title;
   cardMessage.textContent = meaning.message;
   
-  // Reset flip state
   tarotCard.classList.remove('flipped');
-  
-  // Show card container
   cardContainer.classList.add('show');
   
   console.log('Selected card:', selectedCard);
@@ -357,29 +272,15 @@ function drawCard() {
 
 function flipCard() {
   if (!selectedCard) return;
-  
   console.log('Flipping card...');
   const tarotCard = document.getElementById('tarotCard');
-  isFlipped = !isFlipped;
-  
-  if (isFlipped) {
-    tarotCard.classList.add('flipped');
-  } else {
-    tarotCard.classList.remove('flipped');
-  }
+  tarotCard.classList.toggle('flipped');
 }
 
-// Initialize when page loads
 window.addEventListener('load', function() {
-  console.log('Page loaded, initializing tarot app...');
-  
-  const drawButton = document.getElementById('drawButton');
-  const tarotCard = document.getElementById('tarotCard');
-  
-  drawButton.addEventListener('click', drawCard);
-  tarotCard.addEventListener('click', flipCard);
-  
-  console.log('Tarot app initialized!');
+  console.log('Tarot app loaded!');
+  document.getElementById('drawButton').addEventListener('click', drawCard);
+  document.getElementById('tarotCard').addEventListener('click', flipCard);
 });
 </script>
 
