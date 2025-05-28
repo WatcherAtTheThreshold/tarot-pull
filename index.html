@@ -10,10 +10,9 @@
     body {
       margin: 0;
       font-family: 'Crimson Text', 'Georgia', serif;
-      background: url('./images/super_sunset.png') repeat;
-      background-size: cover;
+      background: linear-gradient(to bottom, #fdfcfb, #e2d1c3);
       background-attachment: fixed;
-      color: #f8f4e6;
+      color: #3b2f2f;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -57,7 +56,7 @@
       margin-bottom: 2rem;
       font-style: italic;
       font-size: 1.2rem;
-      color: #e8dcc6;
+      color: #6b5845;
       opacity: 0.9;
       line-height: 1.6;
     }
@@ -179,94 +178,3 @@
     }
   </style>
 </head>
-<body>
-  <div class="mystical-elements">
-    <div class="star"></div>
-    <div class="star"></div>
-    <div class="star"></div>
-  </div>
-
-  <div class="container">
-    <h1>Draw a Card</h1>
-    <p class="intro">Let intuition guide you through the veil of mystery.<br>A profound message awaits your discovery.</p>
-    <button id="drawButton">Pull a Card</button>
-
-    <div class="card-container" id="cardContainer">
-      <div class="card" id="tarotCard">
-        <div class="card-face card-front" id="cardFront"></div>
-        <div class="card-face card-back" id="cardBack">
-          <h2 id="cardTitle">Card Title</h2>
-          <p id="cardMessage">Card message will appear here.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-<script>
-const cards = [
-  'MinervasWisdom.webp',
-  'MoonGarden-CC.png',
-  'PotniaTheron.webp',
-  'under-the-aegis-of-inanna.webp',
-  'under-the-aegis-of-ishtarr.webp'
-];
-
-const meanings = {
-  'MinervasWisdom.webp': {
-    title: 'Minerva\'s Wisdom',
-    message: 'Insight is not given, it is earned. Today, trust in your learning and seek the deeper layer in all things.'
-  },
-  'MoonGarden-CC.png': {
-    title: 'Moon Garden',
-    message: 'What grows in the dark will bloom under moonlight. Let patience and wonder be your guide.'
-  },
-  'PotniaTheron.webp': {
-    title: 'Potnia Theron',
-    message: 'You are keeper of wild spaces. Let instinct move you, and let your power remain untamed.'
-  },
-  'under-the-aegis-of-inanna.webp': {
-    title: 'Under Inanna\'s Aegis',
-    message: 'Your duality is your strength. Embrace boldness and beauty, destruction and rebirth.'
-  },
-  'under-the-aegis-of-ishtarr.webp': {
-    title: 'Under Ishtar\'s Aegis',
-    message: 'Warrior and lover, hunter and healer — you are more than one story. Honor the fullness of your being.'
-  }
-};
-
-let selectedCard = null;
-
-function drawCard() {
-  const index = Math.floor(Math.random() * cards.length);
-  selectedCard = cards[index];
-
-  const cardFront = document.getElementById('cardFront');
-  const cardTitle = document.getElementById('cardTitle');
-  const cardMessage = document.getElementById('cardMessage');
-  const cardContainer = document.getElementById('cardContainer');
-  const tarotCard = document.getElementById('tarotCard');
-
-  cardFront.style.backgroundImage = `url('./images/${selectedCard}')`;
-
-  const meaning = meanings[selectedCard];
-  cardTitle.textContent = meaning.title;
-  cardMessage.textContent = meaning.message;
-
-  tarotCard.classList.remove('flipped');
-  cardContainer.classList.add('show');
-}
-
-function flipCard() {
-  if (!selectedCard) return;
-  const tarotCard = document.getElementById('tarotCard');
-  tarotCard.classList.toggle('flipped');
-}
-
-window.addEventListener('load', function() {
-  document.getElementById('drawButton').addEventListener('click', drawCard);
-  document.getElementById('tarotCard').addEventListener('click', flipCard);
-});
-</script>
-
-</body>
-</html>
