@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tarot Pull - Fairweather</title>
-  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
     body {
       margin: 0;
-      font-family: 'Crimson Text', serif;
+      font-family: 'Crimson Text', 'Georgia', serif;
       background: linear-gradient(to bottom, #fdfcfb, #e2d1c3);
       background-attachment: fixed;
       color: #3b2f2f;
@@ -19,16 +20,125 @@
       min-height: 100vh;
       padding: 2rem;
       text-align: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.2) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
     }
 
     .container {
-      max-width: 1000px;
+      max-width: 1200px;
       padding: 2rem;
       z-index: 1;
       position: relative;
       margin-left: auto;
       margin-right: auto;
       text-align: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(45deg, #ffd89b 0%, #19547b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .intro {
+      margin-bottom: 2rem;
+      font-style: italic;
+      font-size: 1.2rem;
+      color: #6b5845;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    .toggle-container {
+      margin-bottom: 2rem;
+    }
+
+    .toggle-button {
+      background: linear-gradient(145deg, #f4e7d3, #e6d3b7);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      padding: 0.8rem 2rem;
+      margin: 0 0.5rem;
+      font-size: 1.1rem;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 50px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      transition: all 0.4s ease;
+      color: #5d4e37;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .toggle-button:hover {
+      background: linear-gradient(145deg, #f2dcc0, #dcc7a8);
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+    }
+
+    .toggle-button.active {
+      background: linear-gradient(145deg, #dcc7a8, #c9b896);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+      transform: translateY(-1px);
+    }
+
+    .card-container {
+      perspective: 1200px;
+      margin-top: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s ease-in-out;
+    }
+
+    .card-container.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .three-card-layout {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .card-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .card {
+      width: 280px;
+      height: 400px;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      transform-style: preserve-3d;
+      transition: transform 1s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .card.flipped {
+      transform: rotateY(180deg);
     }
 
     .card-face {
@@ -47,72 +157,105 @@
       box-sizing: border-box;
     }
 
-    .card-front,
+    .card-front {
+      background-size: cover;
+      background-position: center;
+    }
+
     .card-back {
-      width: 100%;
-      height: 100%;
-      box-sizing: border-box;
-    }
-
-    .toggle-container {
-      margin-bottom: 1rem;
-    }
-
-    .toggle-button {
-      padding: 0.5rem 1.25rem;
-      margin: 0 0.5rem;
-      font-weight: bold;
-      border: none;
-      border-radius: 25px;
-      background: #e6d3b7;
+      background: linear-gradient(135deg, #fffef7 0%, #f8f4e6 100%);
+      transform: rotateY(180deg);
+      padding: 1.5rem;
       color: #3b2f2f;
-      cursor: pointer;
-      transition: background 0.3s ease;
     }
 
-    .toggle-button.active {
-      background: #cbb89a;
+    .card-back h2 {
+      margin-bottom: 1rem;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #7b4e2d;
     }
 
-    .three-card-layout {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 2rem;
-      flex-wrap: wrap;
+    .card-back p {
+      line-height: 1.6;
+      font-style: italic;
+      margin: 0;
     }
 
     .card-label {
       margin-top: 1rem;
-      font-size: 1rem;
+      font-size: 1.1rem;
       color: #6b5845;
       font-style: italic;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
-    .card {
-      width: 280px;
-      height: 400px;
-      border-radius: 20px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-      transform-style: preserve-3d;
-      transition: transform 1s ease;
-      cursor: pointer;
-      position: relative;
+    .mystical-elements {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
     }
 
-    .card.flipped {
-      transform: rotateY(180deg);
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      animation: twinkle 3s infinite ease-in-out;
+    }
+
+    .star:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+    .star:nth-child(2) { top: 40%; left: 80%; animation-delay: 1s; }
+    .star:nth-child(3) { top: 70%; left: 20%; animation-delay: 2s; }
+    .star:nth-child(4) { top: 60%; left: 90%; animation-delay: 1.5s; }
+    .star:nth-child(5) { top: 85%; left: 15%; animation-delay: 2.5s; }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.5); }
+    }
+
+    @media (max-width: 768px) {
+      .three-card-layout {
+        flex-direction: column;
+        gap: 2rem;
+        align-items: center;
+      }
+      
+      h1 {
+        font-size: 2.5rem;
+      }
+      
+      .container {
+        padding: 1rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="toggle-container">
-    <button id="oneCardBtn" class="toggle-button active">1 Card</button>
-    <button id="threeCardBtn" class="toggle-button">3 Cards</button>
+  <div class="mystical-elements">
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
   </div>
 
   <div class="container">
-    <div id="drawArea"></div>
+    <h1>Draw Your Cards</h1>
+    <p class="intro">Let intuition guide you through the veil of mystery.<br>Choose your path and discover what awaits.</p>
+    
+    <div class="toggle-container">
+      <button id="oneCardBtn" class="toggle-button active">1 Card</button>
+      <button id="threeCardBtn" class="toggle-button">3 Cards</button>
+    </div>
+
+    <div class="card-container" id="drawArea"></div>
   </div>
 
   <script>
@@ -151,9 +294,7 @@
 
     function createCard(image, labelText = '') {
       const cardWrapper = document.createElement('div');
-      cardWrapper.style.display = 'flex';
-      cardWrapper.style.flexDirection = 'column';
-      cardWrapper.style.alignItems = 'center';
+      cardWrapper.className = 'card-wrapper';
 
       const card = document.createElement('div');
       card.className = 'card';
@@ -180,18 +321,24 @@
     function drawCards() {
       const drawArea = document.getElementById('drawArea');
       drawArea.innerHTML = '';
-      const selected = cards.slice().sort(() => 0.5 - Math.random());
+      drawArea.classList.remove('show');
+      
+      setTimeout(() => {
+        const selected = cards.slice().sort(() => 0.5 - Math.random());
 
-      if (drawMode === 'one') {
-        drawArea.appendChild(createCard(selected[0]));
-      } else {
-        const layout = document.createElement('div');
-        layout.className = 'three-card-layout';
-        layout.appendChild(createCard(selected[0], 'PAST'));
-        layout.appendChild(createCard(selected[1], 'PRESENT'));
-        layout.appendChild(createCard(selected[2], 'FUTURE'));
-        drawArea.appendChild(layout);
-      }
+        if (drawMode === 'one') {
+          drawArea.appendChild(createCard(selected[0]));
+        } else {
+          const layout = document.createElement('div');
+          layout.className = 'three-card-layout';
+          layout.appendChild(createCard(selected[0], 'PAST'));
+          layout.appendChild(createCard(selected[1], 'PRESENT'));
+          layout.appendChild(createCard(selected[2], 'FUTURE'));
+          drawArea.appendChild(layout);
+        }
+        
+        drawArea.classList.add('show');
+      }, 100);
     }
 
     document.getElementById('oneCardBtn').addEventListener('click', () => {
@@ -208,6 +355,7 @@
       drawCards();
     });
 
+    // Initialize with one card
     drawCards();
   </script>
 </body>
