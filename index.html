@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tarot Pull - Fairweather</title>
+  <script src="https://unpkg.com/alpinejs" defer></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Georgia', serif;
+      background: url('images/super_sunset.png') repeat;
+      background-size: cover;
+      color: #2c2c2c;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      backdrop-filter: blur(2px);
+    }
+    h1 {
+      font-size: 2.5rem;
+      letter-spacing: 1px;
+    }
+    .intro {
+      margin-bottom: 1rem;
+      font-style: italic;
+      color: #444;
+    }
+    button {
+      background: #f4e7d3;
+      border: none;
+      padding: 0.75rem 2rem;
+      font-size: 1.2rem;
+      cursor: pointer;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      background: #f2dcc0;
+      transform: scale(1.03);
+    }
+    .card-container {
+      perspective: 1000px;
+      margin-top: 2rem;
+    }
+    .card {
+      width: 250px;
+      height: 350px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      transform-style: preserve-3d;
+      transition: transform 0.8s;
+      cursor: pointer;
+      position: relative;
+    }
+    .flipped {
+      transform: rotateY(180deg);
+    }
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .card-front {
+      background-size: cover;
+      background-position: center;
+    }
+    .card-back {
+      background: #fffaf0;
+      transform: rotateY(180deg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      font-size: 1rem;
+      color: #3b2f2f;
+    }
+    .card-back h2 {
+      margin-bottom: 0.5rem;
+      font-size: 1.3rem;
+      color: #7b4e2d;
+    }
+  </style>
+</head>
+<body x-data="tarotPull()">
+  <h1>Draw a Card</h1>
+  <p class="intro">Let intuition guide you. A message awaits beyond the veil.</p>
+  <button @click="drawCard">Pull a Card</button>
+
+  <div class="card-container" x-show="selected" @click="flipped = !flipped">
+    <div class="card" :class="{ 'flipped': flipped }">
+      <div class="card-face card-front" :style="`background-image: url('images/${selected}')`"></div>
+      <div class="card-face card-back">
+        <template x-if="selected">
+          <div>
+            <h2 x-text="getTitle(selected)"></h2>
+            <p x-text="getMessage(selected)"></p>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function tarotPull() {
+      return {
+        cards: [
+          'MinervasWisdom.webp',
+          'MoonGarden-CC.png',
+          'PotniaTheron.webp',
+          'under-the-aegis-of-inanna.webp',
+          'under-the-aegis-of-ishtarr.webp'
+        ],
+        meanings: {
+          'MinervasWisdom.webp': {
+            title: 'Minerva’s Wisdom',
+            message: 'Insight is not given, it is earned. Today, trust in your learning and seek the deeper layer in all things.'
+          },
+          'MoonGarden-CC.png': {
+            title: 'Moon Garden',
+            message: 'What grows in the dark will bloom under moonlight. Let patience and wonder be your guide.'
+          },
+          'PotniaTheron.webp': {
+            title: 'Potnia Theron',
+            message: 'You are keeper of wild spaces. Let instinct move you, and let your power remain untamed.'
+          },
+          'under-the-aegis-of-inanna.webp': {
+            title: 'Under Inanna’s Aegis',
+            message: 'Your duality is your strength. Embrace boldness and beauty, destruction and rebirth.'
+          },
+          'under-the-aegis-of-ishtarr.webp': {
+            title: 'Under Ishtar’s Aegis',
+            message: 'Warrior and lover, hunter and healer — you are more than one story. Honor the fullness of your being.'
+          }
+        },
+        selected: null,
+        flipped: false,
+        drawCard() {
+          const index = Math.floor(Math.random() * this.cards.length);
+          this.selected = this.cards[index];
+          this.flipped = false;
+        },
+        getTitle(name) {
+          return this.meanings[name]?.title || 'Unknown Card';
+        },
+        getMessage(name) {
+          return this.meanings[name]?.message || 'Meaning to be discovered.';
+        }
+      }
+    }
+  </script>
+</body>
+</html>
