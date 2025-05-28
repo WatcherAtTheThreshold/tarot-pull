@@ -1,173 +1,214 @@
-<style>
-  .container {
-    max-width: 1000px;
-    padding: 2rem;
-    z-index: 1;
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-  }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tarot Pull - Fairweather</title>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Crimson Text', serif;
+      background: linear-gradient(to bottom, #fdfcfb, #e2d1c3);
+      background-attachment: fixed;
+      color: #3b2f2f;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 2rem;
+      text-align: center;
+    }
 
-  .card-face {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    border-radius: 20px;
-    overflow: hidden;
-    border: 3px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    box-sizing: border-box;
-  }
+    .container {
+      max-width: 1000px;
+      padding: 2rem;
+      z-index: 1;
+      position: relative;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
 
-  .card-front,
-  .card-back {
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-  }
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  .toggle-container {
-    margin-bottom: 1rem;
-  }
+    .card-front,
+    .card-back {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+    }
 
-  .toggle-button {
-    padding: 0.5rem 1.25rem;
-    margin: 0 0.5rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 25px;
-    background: #e6d3b7;
-    color: #3b2f2f;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
+    .toggle-container {
+      margin-bottom: 1rem;
+    }
 
-  .toggle-button.active {
-    background: #cbb89a;
-  }
+    .toggle-button {
+      padding: 0.5rem 1.25rem;
+      margin: 0 0.5rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 25px;
+      background: #e6d3b7;
+      color: #3b2f2f;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
 
-  .three-card-layout {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 2rem;
-  }
+    .toggle-button.active {
+      background: #cbb89a;
+    }
 
-  .card-label {
-    margin-top: 1rem;
-    font-size: 1rem;
-    color: #6b5845;
-    font-style: italic;
-  }
-</style>
+    .three-card-layout {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
 
-<div class="toggle-container">
-  <button id="oneCardBtn" class="toggle-button active">1 Card</button>
-  <button id="threeCardBtn" class="toggle-button">3 Cards</button>
-</div>
+    .card-label {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: #6b5845;
+      font-style: italic;
+    }
 
-<div class="container">
-  <div id="drawArea"></div>
-</div>
+    .card {
+      width: 280px;
+      height: 400px;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      transform-style: preserve-3d;
+      transition: transform 1s ease;
+      cursor: pointer;
+      position: relative;
+    }
 
-<script>
-const cards = [
-  'MinervasWisdom.webp',
-  'MoonGarden-CC.png',
-  'PotniaTheron.webp',
-  'under-the-aegis-of-inanna.webp',
-  'under-the-aegis-of-ishtarr.webp'
-];
+    .card.flipped {
+      transform: rotateY(180deg);
+    }
+  </style>
+</head>
+<body>
+  <div class="toggle-container">
+    <button id="oneCardBtn" class="toggle-button active">1 Card</button>
+    <button id="threeCardBtn" class="toggle-button">3 Cards</button>
+  </div>
 
-const meanings = {
-  'MinervasWisdom.webp': {
-    title: 'Minerva\'s Wisdom',
-    message: 'Insight is not given, it is earned. Today, trust in your learning and seek the deeper layer in all things.'
-  },
-  'MoonGarden-CC.png': {
-    title: 'Moon Garden',
-    message: 'What grows in the dark will bloom under moonlight. Let patience and wonder be your guide.'
-  },
-  'PotniaTheron.webp': {
-    title: 'Potnia Theron',
-    message: 'You are keeper of wild spaces. Let instinct move you, and let your power remain untamed.'
-  },
-  'under-the-aegis-of-inanna.webp': {
-    title: 'Under Inanna\'s Aegis',
-    message: 'Your duality is your strength. Embrace boldness and beauty, destruction and rebirth.'
-  },
-  'under-the-aegis-of-ishtarr.webp': {
-    title: 'Under Ishtar\'s Aegis',
-    message: 'Warrior and lover, hunter and healer — you are more than one story. Honor the fullness of your being.'
-  }
-};
+  <div class="container">
+    <div id="drawArea"></div>
+  </div>
 
-let drawMode = 'one';
+  <script>
+    const cards = [
+      'MinervasWisdom.webp',
+      'MoonGarden-CC.png',
+      'PotniaTheron.webp',
+      'under-the-aegis-of-inanna.webp',
+      'under-the-aegis-of-ishtarr.webp'
+    ];
 
-function createCard(image, labelText = '') {
-  const cardWrapper = document.createElement('div');
-  cardWrapper.style.display = 'flex';
-  cardWrapper.style.flexDirection = 'column';
-  cardWrapper.style.alignItems = 'center';
+    const meanings = {
+      'MinervasWisdom.webp': {
+        title: 'Minerva\'s Wisdom',
+        message: 'Insight is not given, it is earned. Today, trust in your learning and seek the deeper layer in all things.'
+      },
+      'MoonGarden-CC.png': {
+        title: 'Moon Garden',
+        message: 'What grows in the dark will bloom under moonlight. Let patience and wonder be your guide.'
+      },
+      'PotniaTheron.webp': {
+        title: 'Potnia Theron',
+        message: 'You are keeper of wild spaces. Let instinct move you, and let your power remain untamed.'
+      },
+      'under-the-aegis-of-inanna.webp': {
+        title: 'Under Inanna\'s Aegis',
+        message: 'Your duality is your strength. Embrace boldness and beauty, destruction and rebirth.'
+      },
+      'under-the-aegis-of-ishtarr.webp': {
+        title: 'Under Ishtar\'s Aegis',
+        message: 'Warrior and lover, hunter and healer — you are more than one story. Honor the fullness of your being.'
+      }
+    };
 
-  const card = document.createElement('div');
-  card.className = 'card';
-  card.innerHTML = `
-    <div class="card-face card-front" style="background-image: url('./images/${image}')"></div>
-    <div class="card-face card-back">
-      <h2>${meanings[image].title}</h2>
-      <p>${meanings[image].message}</p>
-    </div>
-  `;
-  card.addEventListener('click', () => card.classList.toggle('flipped'));
+    let drawMode = 'one';
 
-  cardWrapper.appendChild(card);
-  if (labelText) {
-    const label = document.createElement('div');
-    label.className = 'card-label';
-    label.textContent = labelText;
-    cardWrapper.appendChild(label);
-  }
+    function createCard(image, labelText = '') {
+      const cardWrapper = document.createElement('div');
+      cardWrapper.style.display = 'flex';
+      cardWrapper.style.flexDirection = 'column';
+      cardWrapper.style.alignItems = 'center';
 
-  return cardWrapper;
-}
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="card-face card-front" style="background-image: url('./images/${image}')"></div>
+        <div class="card-face card-back">
+          <h2>${meanings[image].title}</h2>
+          <p>${meanings[image].message}</p>
+        </div>
+      `;
+      card.addEventListener('click', () => card.classList.toggle('flipped'));
 
-function drawCards() {
-  const drawArea = document.getElementById('drawArea');
-  drawArea.innerHTML = '';
-  const selected = cards.slice().sort(() => 0.5 - Math.random());
+      cardWrapper.appendChild(card);
+      if (labelText) {
+        const label = document.createElement('div');
+        label.className = 'card-label';
+        label.textContent = labelText;
+        cardWrapper.appendChild(label);
+      }
 
-  if (drawMode === 'one') {
-    drawArea.appendChild(createCard(selected[0]));
-  } else {
-    const layout = document.createElement('div');
-    layout.className = 'three-card-layout';
-    layout.appendChild(createCard(selected[0], 'PAST'));
-    layout.appendChild(createCard(selected[1], 'PRESENT'));
-    layout.appendChild(createCard(selected[2], 'FUTURE'));
-    drawArea.appendChild(layout);
-  }
-}
+      return cardWrapper;
+    }
 
-document.getElementById('oneCardBtn').addEventListener('click', () => {
-  drawMode = 'one';
-  document.getElementById('oneCardBtn').classList.add('active');
-  document.getElementById('threeCardBtn').classList.remove('active');
-  drawCards();
-});
+    function drawCards() {
+      const drawArea = document.getElementById('drawArea');
+      drawArea.innerHTML = '';
+      const selected = cards.slice().sort(() => 0.5 - Math.random());
 
-document.getElementById('threeCardBtn').addEventListener('click', () => {
-  drawMode = 'three';
-  document.getElementById('threeCardBtn').classList.add('active');
-  document.getElementById('oneCardBtn').classList.remove('active');
-  drawCards();
-});
+      if (drawMode === 'one') {
+        drawArea.appendChild(createCard(selected[0]));
+      } else {
+        const layout = document.createElement('div');
+        layout.className = 'three-card-layout';
+        layout.appendChild(createCard(selected[0], 'PAST'));
+        layout.appendChild(createCard(selected[1], 'PRESENT'));
+        layout.appendChild(createCard(selected[2], 'FUTURE'));
+        drawArea.appendChild(layout);
+      }
+    }
 
-drawCards();
-</script>
+    document.getElementById('oneCardBtn').addEventListener('click', () => {
+      drawMode = 'one';
+      document.getElementById('oneCardBtn').classList.add('active');
+      document.getElementById('threeCardBtn').classList.remove('active');
+      drawCards();
+    });
+
+    document.getElementById('threeCardBtn').addEventListener('click', () => {
+      drawMode = 'three';
+      document.getElementById('threeCardBtn').classList.add('active');
+      document.getElementById('oneCardBtn').classList.remove('active');
+      drawCards();
+    });
+
+    drawCards();
+  </script>
+</body>
+</html>
