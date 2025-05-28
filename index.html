@@ -298,8 +298,8 @@
   </div>
 
   <script>
-    document.addEventListener('alpine:init', () => {
-      Alpine.data('tarotPull', () => ({
+    function tarotPull() {
+      return {
         cards: [
           'MinervasWisdom.webp',
           'MoonGarden-CC.png',
@@ -346,8 +346,8 @@
         getMessage(name) {
           return this.meanings[name]?.message || 'Meaning to be discovered.';
         }
-      }))
-    })
+      }
+    }
   </script>
 </body>
 </html>
