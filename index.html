@@ -278,10 +278,10 @@
   <div class="container">
     <h1>Draw a Card</h1>
     <p class="intro">Let intuition guide you through the veil of mystery.<br>A profound message awaits your discovery.</p>
-    <button onclick="window.drawCard ? window.drawCard() : alert('Loading...')">Pull a Card</button>
+    <button id="drawButton">Pull a Card</button>
 
     <div class="card-container" id="cardContainer">
-      <div class="card" id="tarotCard" onclick="window.flipCard ? window.flipCard() : null">>
+      <div class="card" id="tarotCard">>>
         <div class="card-face card-front" id="cardFront"></div>
         <div class="card-face card-back" id="cardBack">
           <h2 id="cardTitle"></h2>
@@ -292,101 +292,119 @@
   </div>
 
   <script>
-    // Ensure functions are globally accessible
-    window.selectedCard = null;
-    window.isFlipped = false;
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM loaded, initializing tarot app...');
+      
+      const cards = [
+        'MinervasWisdom.webp',
+        'MoonGarden-CC.png',
+        'PotniaTheron.webp',
+        'under-the-aegis-of-inanna.webp',
+        'under-the-aegis-of-ishtarr.webp'
+      ];
 
-    window.cards = [
-      'MinervasWisdom.webp',
-      'MoonGarden-CC.png',
-      'PotniaTheron.webp',
-      'under-the-aegis-of-inanna.webp',
-      'under-the-aegis-of-ishtarr.webp'
-    ];
+      const meanings = {
+        'MinervasWisdom.webp': {
+          title: 'Minerva's Wisdom',
+          message: 'Insight is not given, it is earned. Today, trust in your learning and seek the deeper layer in all things.'
+        },
+        'MoonGarden-CC.png': {
+          title: 'Moon Garden',
+          message: 'What grows in the dark will bloom under moonlight. Let patience and wonder be your guide.'
+        },
+        'PotniaTheron.webp': {
+          title: 'Potnia Theron',
+          message: 'You are keeper of wild spaces. Let instinct move you, and let your power remain untamed.'
+        },
+        'under-the-aegis-of-inanna.webp': {
+          title: 'Under Inanna's Aegis',
+          message: 'Your duality is your strength. Embrace boldness and beauty, destruction and rebirth.'
+        },
+        'under-the-aegis-of-ishtarr.webp': {
+          title: 'Under Ishtar's Aegis',
+          message: 'Warrior and lover, hunter and healer — you are more than one story. Honor the fullness of your being.'
+        }
+      };
 
-    window.meanings = {
-      'MinervasWisdom.webp': {
-        title: 'Minerva's Wisdom',
-        message: 'Insight is not given, it is earned. Today, trust in your learning and seek the deeper layer in all things.'
-      },
-      'MoonGarden-CC.png': {
-        title: 'Moon Garden',
-        message: 'What grows in the dark will bloom under moonlight. Let patience and wonder be your guide.'
-      },
-      'PotniaTheron.webp': {
-        title: 'Potnia Theron',
-        message: 'You are keeper of wild spaces. Let instinct move you, and let your power remain untamed.'
-      },
-      'under-the-aegis-of-inanna.webp': {
-        title: 'Under Inanna's Aegis',
-        message: 'Your duality is your strength. Embrace boldness and beauty, destruction and rebirth.'
-      },
-      'under-the-aegis-of-ishtarr.webp': {
-        title: 'Under Ishtar's Aegis',
-        message: 'Warrior and lover, hunter and healer — you are more than one story. Honor the fullness of your being.'
-      }
-    };
+      let selectedCard = null;
+      let isFlipped = false;
 
-    window.drawCard = function() {
-      console.log('drawCard function called!');
-      const index = Math.floor(Math.random() * window.cards.length);
-      window.selectedCard = window.cards[index];
-      window.isFlipped = false;
-      
-      // Update card content
-      const cardFront = document.getElementById('cardFront');
-      const cardTitle = document.getElementById('cardTitle');
-      const cardMessage = document.getElementById('cardMessage');
-      const cardContainer = document.getElementById('cardContainer');
-      const tarotCard = document.getElementById('tarotCard');
-      
-      if (!cardFront || !cardTitle || !cardMessage || !cardContainer || !tarotCard) {
-        console.error('Could not find required elements');
-        return;
-      }
-      
-      // Set background image
-      cardFront.style.backgroundImage = `url('./images/${window.selectedCard}')`;
-      
-      // Set card meaning
-      const meaning = window.meanings[window.selectedCard];
-      cardTitle.textContent = meaning.title;
-      cardMessage.textContent = meaning.message;
-      
-      // Reset flip state
-      tarotCard.classList.remove('flipped');
-      
-      // Show card container with animation
-      cardContainer.classList.add('show');
-      
-      // Debug logging
-      console.log('Selected card:', window.selectedCard);
-      console.log('Full image path:', `./images/${window.selectedCard}`);
-    }
-
-    window.flipCard = function() {
-      if (!window.selectedCard) return;
-      
-      console.log('flipCard function called!');
-      const tarotCard = document.getElementById('tarotCard');
-      if (!tarotCard) {
-        console.error('Could not find tarot card element');
-        return;
-      }
-      
-      window.isFlipped = !window.isFlipped;
-      
-      if (window.isFlipped) {
-        tarotCard.classList.add('flipped');
-      } else {
+      function drawCard() {
+        console.log('drawCard function called!');
+        const index = Math.floor(Math.random() * cards.length);
+        selectedCard = cards[index];
+        isFlipped = false;
+        
+        // Get elements
+        const cardFront = document.getElementById('cardFront');
+        const cardTitle = document.getElementById('cardTitle');
+        const cardMessage = document.getElementById('cardMessage');
+        const cardContainer = document.getElementById('cardContainer');
+        const tarotCard = document.getElementById('tarotCard');
+        
+        if (!cardFront || !cardTitle || !cardMessage || !cardContainer || !tarotCard) {
+          console.error('Could not find required elements');
+          return;
+        }
+        
+        // Set background image
+        cardFront.style.backgroundImage = `url('./images/${selectedCard}')`;
+        
+        // Set card meaning
+        const meaning = meanings[selectedCard];
+        cardTitle.textContent = meaning.title;
+        cardMessage.textContent = meaning.message;
+        
+        // Reset flip state
         tarotCard.classList.remove('flipped');
+        
+        // Show card container with animation
+        cardContainer.classList.add('show');
+        
+        // Debug logging
+        console.log('Selected card:', selectedCard);
+        console.log('Full image path:', `./images/${selectedCard}`);
       }
-    }
 
-    // Test that functions are loaded
-    console.log('Tarot app loaded! Functions available:', {
-      drawCard: typeof window.drawCard,
-      flipCard: typeof window.flipCard
+      function flipCard() {
+        if (!selectedCard) return;
+        
+        console.log('flipCard function called!');
+        const tarotCard = document.getElementById('tarotCard');
+        if (!tarotCard) {
+          console.error('Could not find tarot card element');
+          return;
+        }
+        
+        isFlipped = !isFlipped;
+        
+        if (isFlipped) {
+          tarotCard.classList.add('flipped');
+        } else {
+          tarotCard.classList.remove('flipped');
+        }
+      }
+
+      // Attach event listeners
+      const drawButton = document.getElementById('drawButton');
+      const tarotCard = document.getElementById('tarotCard');
+      
+      if (drawButton) {
+        drawButton.addEventListener('click', drawCard);
+        console.log('Draw button click listener attached');
+      } else {
+        console.error('Could not find draw button');
+      }
+      
+      if (tarotCard) {
+        tarotCard.addEventListener('click', flipCard);
+        console.log('Card click listener attached');
+      } else {
+        console.error('Could not find tarot card');
+      }
+
+      console.log('Tarot app initialized successfully!');
     });
   </script>
 </body>
