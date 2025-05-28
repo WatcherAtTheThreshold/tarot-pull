@@ -145,6 +145,13 @@
       background-size: cover;
       background-position: center;
       position: relative;
+      background-color: #4a3c8c; /* Fallback color if image fails */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f8f4e6;
+      font-size: 1.2rem;
+      text-align: center;
     }
     
     .card-front::after {
@@ -277,7 +284,7 @@
 
     <div class="card-container" x-show="selected" @click="flipped = !flipped">
       <div class="card fade-in" :class="{ 'flipped': flipped }">
-        <div class="card-face card-front" :style="`background-image: url('images/${selected}')`"></div>
+        <div class="card-face card-front" :style="`background-image: url('./images/${selected}')`"></div>
         <div class="card-face card-back">
           <template x-if="selected">
             <div>
@@ -291,8 +298,8 @@
   </div>
 
   <script>
-    function tarotPull() {
-      return {
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('tarotPull', () => ({
         cards: [
           'MinervasWisdom.webp',
           'MoonGarden-CC.png',
@@ -328,6 +335,10 @@
           const index = Math.floor(Math.random() * this.cards.length);
           this.selected = this.cards[index];
           this.flipped = false;
+          
+          // Debug: Log the selected card to console
+          console.log('Selected card:', this.selected);
+          console.log('Full image path:', `./images/${this.selected}`);
         },
         getTitle(name) {
           return this.meanings[name]?.title || 'Unknown Card';
@@ -335,8 +346,8 @@
         getMessage(name) {
           return this.meanings[name]?.message || 'Meaning to be discovered.';
         }
-      }
-    }
+      }))
+    })
   </script>
 </body>
 </html>
