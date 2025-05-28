@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tarot Pull - Fairweather</title>
-  <script src="https://unpkg.com/alpinejs" defer></script>
+  <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
     
@@ -298,56 +298,58 @@
   </div>
 
   <script>
-    function tarotPull() {
-      return {
-        cards: [
-          'MinervasWisdom.webp',
-          'MoonGarden-CC.png',
-          'PotniaTheron.webp',
-          'under-the-aegis-of-inanna.webp',
-          'under-the-aegis-of-ishtarr.webp'
-        ],
-        meanings: {
-          'MinervasWisdom.webp': {
-            title: 'Minerva's Wisdom',
-            message: 'Insight is not given, it is earned. Today, trust in your learning and seek the deeper layer in all things.'
+    document.addEventListener('DOMContentLoaded', function() {
+      window.tarotPull = function() {
+        return {
+          cards: [
+            'MinervasWisdom.webp',
+            'MoonGarden-CC.png',
+            'PotniaTheron.webp',
+            'under-the-aegis-of-inanna.webp',
+            'under-the-aegis-of-ishtarr.webp'
+          ],
+          meanings: {
+            'MinervasWisdom.webp': {
+              title: 'Minerva's Wisdom',
+              message: 'Insight is not given, it is earned. Today, trust in your learning and seek the deeper layer in all things.'
+            },
+            'MoonGarden-CC.png': {
+              title: 'Moon Garden',
+              message: 'What grows in the dark will bloom under moonlight. Let patience and wonder be your guide.'
+            },
+            'PotniaTheron.webp': {
+              title: 'Potnia Theron',
+              message: 'You are keeper of wild spaces. Let instinct move you, and let your power remain untamed.'
+            },
+            'under-the-aegis-of-inanna.webp': {
+              title: 'Under Inanna's Aegis',
+              message: 'Your duality is your strength. Embrace boldness and beauty, destruction and rebirth.'
+            },
+            'under-the-aegis-of-ishtarr.webp': {
+              title: 'Under Ishtar's Aegis',
+              message: 'Warrior and lover, hunter and healer — you are more than one story. Honor the fullness of your being.'
+            }
           },
-          'MoonGarden-CC.png': {
-            title: 'Moon Garden',
-            message: 'What grows in the dark will bloom under moonlight. Let patience and wonder be your guide.'
+          selected: null,
+          flipped: false,
+          drawCard() {
+            const index = Math.floor(Math.random() * this.cards.length);
+            this.selected = this.cards[index];
+            this.flipped = false;
+            
+            // Debug: Log the selected card to console
+            console.log('Selected card:', this.selected);
+            console.log('Full image path:', `./images/${this.selected}`);
           },
-          'PotniaTheron.webp': {
-            title: 'Potnia Theron',
-            message: 'You are keeper of wild spaces. Let instinct move you, and let your power remain untamed.'
+          getTitle(name) {
+            return this.meanings[name]?.title || 'Unknown Card';
           },
-          'under-the-aegis-of-inanna.webp': {
-            title: 'Under Inanna's Aegis',
-            message: 'Your duality is your strength. Embrace boldness and beauty, destruction and rebirth.'
-          },
-          'under-the-aegis-of-ishtarr.webp': {
-            title: 'Under Ishtar's Aegis',
-            message: 'Warrior and lover, hunter and healer — you are more than one story. Honor the fullness of your being.'
+          getMessage(name) {
+            return this.meanings[name]?.message || 'Meaning to be discovered.';
           }
-        },
-        selected: null,
-        flipped: false,
-        drawCard() {
-          const index = Math.floor(Math.random() * this.cards.length);
-          this.selected = this.cards[index];
-          this.flipped = false;
-          
-          // Debug: Log the selected card to console
-          console.log('Selected card:', this.selected);
-          console.log('Full image path:', `./images/${this.selected}`);
-        },
-        getTitle(name) {
-          return this.meanings[name]?.title || 'Unknown Card';
-        },
-        getMessage(name) {
-          return this.meanings[name]?.message || 'Meaning to be discovered.';
         }
       }
-    }
+    });
   </script>
 </body>
 </html>
